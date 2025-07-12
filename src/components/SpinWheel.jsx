@@ -68,39 +68,42 @@ const SpinWheel = ({ names, onSpinComplete, onBackToSetup }) => {
               className={`relative w-64 h-64 rounded-full overflow-hidden shadow-glow ${isSpinning ? 'animate-spin-wheel' : ''}`}
               style={{ 
                 transform: `rotate(${rotation}deg)`,
-                transition: isSpinning ? 'none' : 'transform 0.3s ease-out'
+                transition: isSpinning ? 'none' : 'transform 0.3s ease-out',
+                background: names.length > 0 ? `conic-gradient(${names.map((_, index) => {
+                  const startPercent = (index / names.length) * 100;
+                  const endPercent = ((index + 1) / names.length) * 100;
+                  return `${getWheelColors(index)} ${startPercent}% ${endPercent}%`;
+                }).join(', ')})` : getWheelColors(0)
               }}
             >
+              {/* Segment lines and text */}
               {names.map((name, index) => {
-                const startAngle = index * segmentAngle;
-                const endAngle = (index + 1) * segmentAngle;
-                const midAngle = (startAngle + endAngle) / 2;
+                const angle = (index * segmentAngle) + (segmentAngle / 2);
+                const textRadius = 80; // Distance from center for text
                 
                 return (
-                  <div
-                    key={index}
-                    className="absolute w-full h-full"
-                    style={{
-                      clipPath: `polygon(50% 50%, ${
-                        50 + 50 * Math.cos((startAngle - 90) * Math.PI / 180)
-                      }% ${
-                        50 + 50 * Math.sin((startAngle - 90) * Math.PI / 180)
-                      }%, ${
-                        50 + 50 * Math.cos((endAngle - 90) * Math.PI / 180)
-                      }% ${
-                        50 + 50 * Math.sin((endAngle - 90) * Math.PI / 180)
-                      }%)`,
-                      backgroundColor: getWheelColors(index),
-                    }}
-                  >
+                  <div key={index}>
+                    {/* Segment divider line */}
                     <div
-                      className="absolute text-white font-semibold text-sm"
+                      className="absolute w-0.5 bg-white/30 origin-bottom"
                       style={{
-                        left: `${50 + 35 * Math.cos((midAngle - 90) * Math.PI / 180)}%`,
-                        top: `${50 + 35 * Math.sin((midAngle - 90) * Math.PI / 180)}%`,
-                        transform: `translate(-50%, -50%) rotate(${midAngle}deg)`,
-                        transformOrigin: 'center',
+                        height: '128px',
+                        left: '50%',
+                        bottom: '50%',
+                        transform: `translateX(-50%) rotate(${index * segmentAngle}deg)`,
+                      }}
+                    />
+                    
+                    {/* Name text */}
+                    <div
+                      className="absolute text-white font-bold text-sm pointer-events-none"
+                      style={{
+                        left: `${50 + (textRadius / 128) * 50 * Math.cos((angle - 90) * Math.PI / 180)}%`,
+                        top: `${50 + (textRadius / 128) * 50 * Math.sin((angle - 90) * Math.PI / 180)}%`,
+                        transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
                         whiteSpace: 'nowrap',
+                        fontSize: names.length > 8 ? '10px' : names.length > 6 ? '12px' : '14px'
                       }}
                     >
                       {name}
@@ -110,7 +113,7 @@ const SpinWheel = ({ names, onSpinComplete, onBackToSetup }) => {
               })}
               
               {/* Center circle */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg border-4 border-primary"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg border-4 border-primary z-10"></div>
             </div>
           </div>
 
