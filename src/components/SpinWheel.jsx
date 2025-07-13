@@ -61,8 +61,9 @@ const SpinWheel = ({ names, onSpinComplete, onBackToSetup }) => {
             <div 
               className={`relative w-64 h-64 rounded-full overflow-hidden shadow-glow ${isSpinning ? 'animate-spin-wheel' : ''}`}
               style={{ 
-                transform: `rotate(${rotation}deg)`,
+                transform: isSpinning ? 'none' : `rotate(${rotation}deg)`,
                 transition: isSpinning ? 'none' : 'transform 0.3s ease-out',
+                animationFillMode: isSpinning ? 'forwards' : 'none',
                 background: names.length > 0 ? `conic-gradient(${names.map((_, index) => {
                   const startPercent = (index / names.length) * 100;
                   const endPercent = ((index + 1) / names.length) * 100;
