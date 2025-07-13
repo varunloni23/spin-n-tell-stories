@@ -9,14 +9,8 @@ const SpinWheel = ({ names, onSpinComplete, onBackToSetup }) => {
 
   const getWheelColors = (index) => {
     const colors = [
-      'hsl(280 100% 70%)', // Primary purple
-      'hsl(320 100% 75%)', // Secondary pink  
-      'hsl(200 100% 70%)', // Accent blue
-      'hsl(120 100% 70%)', // Green
-      'hsl(60 100% 70%)',  // Yellow
-      'hsl(0 100% 70%)',   // Red
-      'hsl(180 100% 70%)', // Cyan
-      'hsl(270 100% 80%)', // Light purple
+      'hsl(340 80% 75%)', // Pink
+      'hsl(280 70% 80%)', // Lavender
     ];
     return colors[index % colors.length];
   };
@@ -58,9 +52,9 @@ const SpinWheel = ({ names, onSpinComplete, onBackToSetup }) => {
         <CardContent className="flex flex-col items-center space-y-6">
           {/* Wheel Container */}
           <div className="relative">
-            {/* Pointer */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10">
-              <div className="w-0 h-0 border-l-4 border-r-4 border-b-8 border-l-transparent border-r-transparent border-b-primary"></div>
+            {/* Pointer Arrow */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 z-20">
+              <div className="w-0 h-0 border-l-[12px] border-r-[12px] border-b-[16px] border-l-transparent border-r-transparent border-b-green-500 drop-shadow-md"></div>
             </div>
             
             {/* Wheel */}
@@ -112,8 +106,14 @@ const SpinWheel = ({ names, onSpinComplete, onBackToSetup }) => {
                 );
               })}
               
-              {/* Center circle */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg border-4 border-primary z-10"></div>
+              {/* Center Spin Button */}
+              <button
+                onClick={spinWheel}
+                disabled={isSpinning}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-blue-500 hover:bg-blue-600 disabled:opacity-75 rounded-full shadow-lg border-4 border-white z-20 flex items-center justify-center text-white font-bold text-sm transition-colors"
+              >
+                {isSpinning ? '...' : 'Spin'}
+              </button>
             </div>
           </div>
 
